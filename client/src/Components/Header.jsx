@@ -30,7 +30,9 @@ const Header = () => {
         <Button className="w-9 h-9" color="gray" pill>
           <FaMoon />
         </Button>
-        <Button gradientDuoTone="purpleToBlue">Sign IN</Button>
+        <Button gradientDuoTone="purpleToBlue" outline>
+          Sign IN
+        </Button>
         <Navbar.Toggle />
       </div>
       <Navbar.Collapse>
