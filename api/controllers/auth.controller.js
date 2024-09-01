@@ -1,10 +1,11 @@
 import User from "../models/user.model.js";
 import bcryptjs from "bcryptjs";
+import { errorHandler } from "../utils/error.js";
 // export const signup = (req, res) => {
 //   console.log(req.body);
 // };
 
-export const signup = async (req, res) => {
+export const signup = async (req, res, next) => {
   const { username, email, password } = req.body;
 
   if (
@@ -15,7 +16,7 @@ export const signup = async (req, res) => {
     email === "" ||
     password === ""
   ) {
-    res.send({ message: "All Feilds are Required" });
+    next(errorHandler(400, "All Feilds are Required"));
   }
 
   //   password hashing
@@ -32,6 +33,6 @@ export const signup = async (req, res) => {
     await newUser.save();
     res.json({ message: "Signup Successful" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(error);
   }
 };
