@@ -13,7 +13,7 @@ const FooterComp = () => {
       <Footer container className="border border-t-8 border-teal-500">
         <div className="w-full">
           <div className="grid w-full justify-between sm:flex sm:justify-between md:flex md:grid-cols-1">
-            <div>
+            <div className="mb-5">
               <Link
                 className="self-center whitespace-nowrap text-xl sm:text-xl font-semibold dark:text-white"
                 to={"/"}
