@@ -30,19 +30,21 @@ const Header = () => {
         <Button className="w-9 h-9" color="gray" pill>
           <FaMoon />
         </Button>
-        <Button gradientDuoTone="purpleToBlue" outline>
-          Sign IN
-        </Button>
+        <Link to="/signin">
+          <Button gradientDuoTone="purpleToBlue" outline>
+            Sign in
+          </Button>
+        </Link>
         <Navbar.Toggle />
       </div>
       <Navbar.Collapse>
-        <Navbar.Link active={path === "/"}>
+        <Navbar.Link active={path === "/"} as={"div"}>
           <Link to="/">Home</Link>
         </Navbar.Link>
-        <Navbar.Link active={path === "/about"}>
+        <Navbar.Link active={path === "/about"} as={"div"}>
           <Link to="/about">About</Link>
         </Navbar.Link>
-        <Navbar.Link active={path === "/project"}>
+        <Navbar.Link active={path === "/project"} as={"div"}>
           <Link to="/project">Projects</Link>
         </Navbar.Link>
       </Navbar.Collapse>
