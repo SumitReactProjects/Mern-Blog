@@ -95,3 +95,69 @@ export const signin = async (req, res, next) => {
     next(error);
   }
 };
+
+// Creating Google Auth for Backend
+export const google = async (req, res, next) => {
+  // Getting Data from body
+  const { email, name, googlePhotoUrl } = req.body;
+
+  try {
+    // Checking the user exits in database or not
+    const user = await User.findOne({ email });
+    // if User exist
+    if (user) {
+      //creating a token
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+      // remove the password feild from user doc
+      const { password, ...rest } = user._doc;
+      // Sending a ok response with token
+      res
+        .status(200)
+        .cookie("access-token", token, { httpOnly: true })
+        .json(rest);
+    } else {
+      // If the user is not exists
+      // then will generate random password for user with google auth
+      const generatePassword =
+        Math.random().toString(36).slice(-8) +
+        Math.random().toString(36).slice(-8);
+
+      // After Generating password password should be hashed
+
+      const hashPassword = bcryptjs.hashSync(generatePassword, 10);
+
+      // After hashing the password will create an new User
+
+      const newUser = new User({
+        username:
+          name.toLowerCase().split("").join("") +
+          Math.random().toString(9).slice(-4),
+        email,
+        password: hashPassword,
+        profilePhoto: googlePhotoUrl,
+      });
+
+      //then user will save in databae
+
+      await newUser.save();
+
+      // and Generate a token
+
+      const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
+
+      // and remove the password from newly created user
+
+      const { password, ...rest } = newUser._doc;
+
+      // Send Ok response
+
+      res
+        .status(200)
+        .cookie("access-token", token, { httpOnly: true })
+        .json(rest);
+    }
+  } catch (error) {
+    // in case of error
+    next(error);
+  }
+};

@@ -10,15 +10,18 @@ const OAuth = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleGoogleClick = async () => {
+    // it is a firebase config app
     const auth = getAuth(app);
-
+    // Create a New Google user
     const provider = new GoogleAuthProvider();
+    // it will open in model
 
     provider.setCustomParameters({ prompt: "select_account" });
 
     try {
       const resultFromGoogleProvider = await signInWithPopup(auth, provider);
       //   console.log(resultFromGoogleProvider);
+      //sending user to backend
       const res = await fetch("/api/auth/google", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
