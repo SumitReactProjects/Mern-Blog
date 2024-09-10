@@ -7,6 +7,7 @@ import {
   signInFailure,
 } from "../redux/user/userslice";
 import { useDispatch, useSelector } from "react-redux";
+import OAuth from "../Components/OAuth";
 
 function Signin() {
   const navigate = useNavigate();
@@ -98,6 +99,7 @@ function Signin() {
                 "Signin"
               )}
             </Button>
+            <OAuth />
             <div className="flex gap-2 text-sm">
               <span>Already have an Account ?</span>
               <Link to={"/signup"} className="text-blue-500">
