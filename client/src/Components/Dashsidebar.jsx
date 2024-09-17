@@ -26,6 +26,7 @@ const Dashsidebar = () => {
               label="User"
               labelColor="dark"
               className="cursor-pointer"
+              as="div"
             >
               Profile
             </SidebarItem>

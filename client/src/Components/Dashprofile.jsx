@@ -1,16 +1,29 @@
 import { Button, TextInput } from "flowbite-react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 
 const Dashprofile = () => {
   const { currentUser } = useSelector((state) => state.user);
-  console.log(currentUser);
+  // setting image file and URL
+  const [imageFile, setImageFile] = useState(null);
+  const [imageFileURL, setImageFileURL] = useState(null);
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+
+    if (file) {
+      setImageFile(file);
+      setImageFileURL(URL.createObjectURL(file));
+    }
+  };
+  console.log(imageFile, imageFileURL);
   return (
     <div className="mx-auto max-w-lg w-full p-3">
       <h1 className="text-center text-3xl font-semibold my-7">Profile</h1>
       <form className="flex flex-col gap-6">
+        <input type="file" accept="image/*" onChange={handleImageChange} />
         <div className="w-32 h-32 self-center mx-auto cursor-pointer shadow-md overflow-hidden rounded-full">
           <img
-            src={currentUser.profilePhoto}
+            src={imageFileURL || currentUser.profilePhoto}
             alt="User"
             className="w-full h-full rounded-full object-cover border-8 border-[lightgray]"
           />
