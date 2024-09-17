@@ -22,7 +22,7 @@ function Dashboard() {
         {/* sidebar */}
         <Dashsidebar />
       </div>
-      <div>
+      <div className="w-full">
         {/* {tabs} */}
         {tab === "" && <Dashprofile />}
         {tab === "profile" && <Dashprofile />}
