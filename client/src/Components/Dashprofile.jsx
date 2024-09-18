@@ -1,6 +1,13 @@
-import { Button, TextInput } from "flowbite-react";
-import { useState, useRef } from "react";
+import { Alert, Button, TextInput } from "flowbite-react";
+import { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { app } from "../firebase.js";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
 
 const Dashprofile = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -9,6 +16,11 @@ const Dashprofile = () => {
   // setting image file and URL
   const [imageFile, setImageFile] = useState(null);
   const [imageFileURL, setImageFileURL] = useState(null);
+  const [imageFileUploadingProgress, setImageFileUploadingProgress] =
+    useState(null);
+  const [imageFileUploadingError, setImageFileUploadError] = useState(null);
+
+  console.log(imageFileUploadingProgress, imageFileUploadingError);
   const handleImageChange = async (e) => {
     // Selecting file from input Feilds
     const file = e.target.files[0];
@@ -20,7 +32,42 @@ const Dashprofile = () => {
       setImageFileURL(URL.createObjectURL(file));
     }
   };
-  console.log(imageFile, imageFileURL);
+  // console.log(imageFile, imageFileURL);
+  useEffect(() => {
+    if (imageFile) {
+      uploadImage();
+    }
+  }, [imageFile]);
+
+  const uploadImage = async () => {
+    // console.log("image Uploading...");
+    const storage = getStorage(app);
+
+    const fileName = new Date().getTime() + imageFile.name;
+
+    const storageRef = ref(storage, fileName);
+
+    const uploadTask = uploadBytesResumable(storageRef, imageFile);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setImageFileUploadingProgress(progress.toFixed(0));
+      },
+      (error) => {
+        setImageFileUploadError(
+          "Could not Upload Image (File Must be less than 2MB) "
+        );
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((getDownloadURL) => {
+          setImageFileURL(getDownloadURL);
+        });
+      }
+    );
+  };
   return (
     <div className="mx-auto max-w-lg w-full p-3">
       <h1 className="text-center text-3xl font-semibold my-7">Profile</h1>
@@ -42,6 +89,9 @@ const Dashprofile = () => {
             className="w-full h-full rounded-full object-cover border-8 border-[lightgray]"
           />
         </div>
+        {imageFileUploadingError && (
+          <Alert color="failure">{imageFileUploadingError}</Alert>
+        )}
         <TextInput
           type="text"
           id="username"
