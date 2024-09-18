@@ -8,6 +8,8 @@ import {
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
+import { CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 
 const Dashprofile = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -22,6 +24,7 @@ const Dashprofile = () => {
 
   console.log(imageFileUploadingProgress, imageFileUploadingError);
   const handleImageChange = async (e) => {
+    setImageFileUploadError(null);
     // Selecting file from input Feilds
     const file = e.target.files[0];
     // Check the file exist or not if exist
@@ -60,6 +63,7 @@ const Dashprofile = () => {
         setImageFileUploadError(
           "Could not Upload Image (File Must be less than 2MB) "
         );
+        setImageFileUploadingProgress(null);
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((getDownloadURL) => {
@@ -80,13 +84,38 @@ const Dashprofile = () => {
           hidden
         />
         <div
-          className="w-32 h-32 self-center mx-auto cursor-pointer shadow-md overflow-hidden rounded-full"
+          className="relative w-32 h-32 self-center mx-auto cursor-pointer shadow-md overflow-hidden rounded-full"
           onClick={() => filePickerRef.current.click()}
         >
+          {imageFileUploadingProgress && (
+            <CircularProgressbar
+              value={imageFileUploadingProgress || 0}
+              text={`${imageFileUploadingProgress}%`}
+              strokeWidth={5}
+              styles={{
+                root: {
+                  width: "100%",
+                  height: "100%",
+                  position: "absolute",
+                  top: "0",
+                  left: "0",
+                },
+                path: {
+                  stroke: `rgba(62,152,199,${
+                    imageFileUploadingProgress / 100
+                  })`,
+                },
+              }}
+            ></CircularProgressbar>
+          )}
           <img
             src={imageFileURL || currentUser.profilePhoto}
             alt="User"
-            className="w-full h-full rounded-full object-cover border-8 border-[lightgray]"
+            className={`w-full h-full rounded-full object-cover border-8 border-[lightgray] ${
+              imageFileUploadingProgress &&
+              imageFileUploadingProgress < 100 &&
+              "opacity-60"
+            }`}
           />
         </div>
         {imageFileUploadingError && (
