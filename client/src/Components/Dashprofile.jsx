@@ -10,6 +10,12 @@ import {
 } from "firebase/storage";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import {
+  updateStart,
+  updateSuccess,
+  updateFailure,
+} from "../redux/user/userslice.js";
+import { useDispatch } from "react-redux";
 
 const Dashprofile = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -22,6 +28,7 @@ const Dashprofile = () => {
     useState(null);
   const [imageFileUploadingError, setImageFileUploadError] = useState(null);
   const [formData, setFormData] = useState({});
+  const dispatch = useDispatch();
 
   // console.log(imageFileUploadingProgress, imageFileUploadingError);
   const handleImageChange = async (e) => {
@@ -79,10 +86,36 @@ const Dashprofile = () => {
   };
   console.log(formData);
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (Object.keys(formData).length === 0) {
+      return;
+    }
+    try {
+      dispatch(updateStart());
+      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        dispatch(updateFailure(data.message));
+      } else {
+        dispatch(updateSuccess(data));
+      }
+    } catch (error) {
+      dispatch(updateFailure(error.message));
+    }
+  };
+  console.log(currentUser);
   return (
     <div className="mx-auto max-w-lg w-full p-3">
       <h1 className="text-center text-3xl font-semibold my-7">Profile</h1>
-      <form className="flex flex-col gap-6">
+      <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
         <input
           type="file"
           accept="image/*"
