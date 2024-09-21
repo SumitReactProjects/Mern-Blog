@@ -27,6 +27,10 @@ const Dashprofile = () => {
   const [imageFileUploadingProgress, setImageFileUploadingProgress] =
     useState(null);
   const [imageFileUploadingError, setImageFileUploadError] = useState(null);
+  const [imageFileUploading, setImageFileUploading] = useState(null);
+  const [updateUserSuccess, setUpdateUserSuccess] = useState(null);
+  const [updateUserError, setUpdateUserError] = useState(null);
+
   const [formData, setFormData] = useState({});
   const dispatch = useDispatch();
 
@@ -52,6 +56,7 @@ const Dashprofile = () => {
 
   const uploadImage = async () => {
     // console.log("image Uploading...");
+    setImageFileUploading(true);
     const storage = getStorage(app);
 
     const fileName = new Date().getTime() + imageFile.name;
@@ -77,6 +82,7 @@ const Dashprofile = () => {
         getDownloadURL(uploadTask.snapshot.ref).then((getDownloadURL) => {
           setImageFileURL(getDownloadURL);
           setFormData({ ...formData, profilePhoto: getDownloadURL });
+          setImageFileUploading(false);
         });
       }
     );
@@ -88,8 +94,14 @@ const Dashprofile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setUpdateUserError(null);
+    setUpdateUserSuccess(null);
     if (Object.keys(formData).length === 0) {
+      setUpdateUserError("No Changes made !!!");
+      return;
+    }
+    if (imageFileUploading) {
+      setUpdateUserError("Wait until image is Uploading...");
       return;
     }
     try {
@@ -104,8 +116,10 @@ const Dashprofile = () => {
       const data = await res.json();
       if (!res.ok) {
         dispatch(updateFailure(data.message));
+        setUpdateUserError(data.message);
       } else {
         dispatch(updateSuccess(data));
+        setUpdateUserSuccess("User Profile Updated Successfully");
       }
     } catch (error) {
       dispatch(updateFailure(error.message));
@@ -187,6 +201,10 @@ const Dashprofile = () => {
         <span className="cursor-pointer">Delete Account</span>
         <span className="cursor-pointer">SignOut</span>
       </div>
+      {updateUserSuccess && (
+        <Alert color={"success"}>{updateUserSuccess}</Alert>
+      )}
+      {updateUserError && <Alert color={"failure"}>{updateUserError}</Alert>}
     </div>
   );
 };
