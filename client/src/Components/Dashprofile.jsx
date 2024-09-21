@@ -21,8 +21,9 @@ const Dashprofile = () => {
   const [imageFileUploadingProgress, setImageFileUploadingProgress] =
     useState(null);
   const [imageFileUploadingError, setImageFileUploadError] = useState(null);
+  const [formData, setFormData] = useState({});
 
-  console.log(imageFileUploadingProgress, imageFileUploadingError);
+  // console.log(imageFileUploadingProgress, imageFileUploadingError);
   const handleImageChange = async (e) => {
     setImageFileUploadError(null);
     // Selecting file from input Feilds
@@ -68,10 +69,16 @@ const Dashprofile = () => {
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((getDownloadURL) => {
           setImageFileURL(getDownloadURL);
+          setFormData({ ...formData, profilePhoto: getDownloadURL });
         });
       }
     );
   };
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
+  console.log(formData);
+
   return (
     <div className="mx-auto max-w-lg w-full p-3">
       <h1 className="text-center text-3xl font-semibold my-7">Profile</h1>
@@ -125,9 +132,20 @@ const Dashprofile = () => {
           type="text"
           id="username"
           defaultValue={currentUser.username}
+          onChange={handleChange}
         />
-        <TextInput type="text" id="email" defaultValue={currentUser.email} />
-        <TextInput type="password" id="password" placeholder="********" />
+        <TextInput
+          type="text"
+          id="email"
+          defaultValue={currentUser.email}
+          onChange={handleChange}
+        />
+        <TextInput
+          type="password"
+          id="password"
+          placeholder="********"
+          onChange={handleChange}
+        />
         <Button type="submit" gradientDuoTone={"purpleToBlue"} outline>
           Update Profile
         </Button>
