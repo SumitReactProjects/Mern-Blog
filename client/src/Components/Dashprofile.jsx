@@ -1,4 +1,4 @@
-import { Alert, Button, TextInput } from "flowbite-react";
+import { Alert, Button, Modal, TextInput } from "flowbite-react";
 import { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { app } from "../firebase.js";
@@ -14,8 +14,12 @@ import {
   updateStart,
   updateSuccess,
   updateFailure,
+  deleteStart,
+  deleteSuccess,
+  deleteFailure,
 } from "../redux/user/userslice.js";
 import { useDispatch } from "react-redux";
+import { HiOutlineExclamationCircle } from "react-icons/hi2";
 
 const Dashprofile = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -30,6 +34,7 @@ const Dashprofile = () => {
   const [imageFileUploading, setImageFileUploading] = useState(null);
   const [updateUserSuccess, setUpdateUserSuccess] = useState(null);
   const [updateUserError, setUpdateUserError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   const [formData, setFormData] = useState({});
   const dispatch = useDispatch();
@@ -126,6 +131,25 @@ const Dashprofile = () => {
     }
   };
   console.log(currentUser);
+  const handleDelete = async () => {
+    setShowModal(false);
+    try {
+      dispatch(deleteStart());
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: "DELETE",
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        dispatch(deleteFailure(data.message));
+      } else {
+        dispatch(deleteSuccess(data));
+      }
+    } catch (error) {
+      dispatch(deleteFailure(error.message));
+    }
+  };
   return (
     <div className="mx-auto max-w-lg w-full p-3">
       <h1 className="text-center text-3xl font-semibold my-7">Profile</h1>
@@ -198,13 +222,40 @@ const Dashprofile = () => {
         </Button>
       </form>
       <div className="flex items-center justify-between text-red-500 my-4">
-        <span className="cursor-pointer">Delete Account</span>
+        <span className="cursor-pointer" onClick={() => setShowModal(true)}>
+          Delete Account
+        </span>
         <span className="cursor-pointer">SignOut</span>
       </div>
       {updateUserSuccess && (
         <Alert color={"success"}>{updateUserSuccess}</Alert>
       )}
       {updateUserError && <Alert color={"failure"}>{updateUserError}</Alert>}
+      {/* {error && <Alert color={"failure"}>{error}</Alert>} */}
+      <Modal
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        popup
+        size="lg"
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineExclamationCircle className="w-14 h-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto" />
+            <h1 className="mb-5 text-xl text-gray-500 dark:text-gray-200">
+              Are you Sure you want to delete your Account ?
+            </h1>
+            <div className="flex items-center justify-center gap-5">
+              <Button color={"failure"} onClick={handleDelete}>
+                Yes, I am Sure
+              </Button>
+              <Button color="gray" onClick={() => setShowModal(false)}>
+                No, Cancel
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };
