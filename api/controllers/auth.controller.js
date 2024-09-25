@@ -81,9 +81,13 @@ export const signin = async (req, res, next) => {
 
     // Now User authentication(Generate token)
 
-    const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET, {
-      expiresIn: "1d",
-    });
+    const token = jwt.sign(
+      { id: validUser._id, isAdmin: validUser.isAdmin },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1d",
+      }
+    );
 
     // Now Create Response
 
@@ -107,7 +111,10 @@ export const google = async (req, res, next) => {
     // if User exist
     if (user) {
       //creating a token
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+      const token = jwt.sign(
+        { id: user._id, isAdmin: user.isAdmin },
+        process.env.JWT_SECRET
+      );
       // remove the password feild from user doc
       const { password, ...rest } = user._doc;
       // Sending a ok response with token
@@ -143,7 +150,10 @@ export const google = async (req, res, next) => {
 
       // and Generate a token
 
-      const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
+      const token = jwt.sign(
+        { id: newUser._id, isAdmin: newUser.isAdmin },
+        process.env.JWT_SECRET
+      );
 
       // and remove the password from newly created user
 
