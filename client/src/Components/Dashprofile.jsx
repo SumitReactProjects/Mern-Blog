@@ -21,9 +21,10 @@ import {
 } from "../redux/user/userslice.js";
 import { useDispatch } from "react-redux";
 import { HiOutlineExclamationCircle } from "react-icons/hi2";
+import { Link } from "react-router-dom";
 
 const Dashprofile = () => {
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser, loading, error } = useSelector((state) => state.user);
   // use Ref
   const filePickerRef = useRef();
   // setting image file and URL
@@ -234,9 +235,25 @@ const Dashprofile = () => {
           placeholder="********"
           onChange={handleChange}
         />
-        <Button type="submit" gradientDuoTone={"purpleToBlue"} outline>
-          Update Profile
+        <Button
+          type="submit"
+          gradientDuoTone={"purpleToBlue"}
+          outline
+          disabled={loading}
+        >
+          {loading && imageFileUploading ? "loading..." : "Update"}
         </Button>
+        {currentUser.isAdmin && (
+          <Link to={"/create-post"}>
+            <Button
+              type="button"
+              gradientDuoTone={"purpleToPink"}
+              className="w-full"
+            >
+              Create a Post
+            </Button>
+          </Link>
+        )}
       </form>
       <div className="flex items-center justify-between text-red-500 my-4">
         <span className="cursor-pointer" onClick={() => setShowModal(true)}>
@@ -250,7 +267,7 @@ const Dashprofile = () => {
         <Alert color={"success"}>{updateUserSuccess}</Alert>
       )}
       {updateUserError && <Alert color={"failure"}>{updateUserError}</Alert>}
-      {/* {error && <Alert color={"failure"}>{error}</Alert>} */}
+      {error && <Alert color={"failure"}>{error}</Alert>}
       <Modal
         show={showModal}
         onClose={() => setShowModal(false)}
