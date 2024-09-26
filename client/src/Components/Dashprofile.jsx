@@ -84,6 +84,7 @@ const Dashprofile = () => {
           "Could not Upload Image (File Must be less than 2MB) "
         );
         setImageFileUploadingProgress(null);
+        console.log(error);
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((getDownloadURL) => {
