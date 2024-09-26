@@ -76,9 +76,6 @@ export const signin = async (req, res, next) => {
       return next(errorHandler(404, "Invalid Password"));
     }
 
-    // Remove password from Details
-    const { password: pass, ...rest } = validUser._doc;
-
     // Now User authentication(Generate token)
 
     const token = jwt.sign(
@@ -88,6 +85,9 @@ export const signin = async (req, res, next) => {
         expiresIn: "1d",
       }
     );
+
+    // Remove password from Details
+    const { password: pass, ...rest } = validUser._doc;
 
     // Now Create Response
 
