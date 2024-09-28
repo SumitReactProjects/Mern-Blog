@@ -81,10 +81,11 @@ const CreatePost = () => {
       }
       if (res.ok) {
         setPublishError(null);
+
         navigate(`/post/${data.slug}`);
       }
     } catch (error) {
-      setPublishError("Something wenr Wrong");
+      setPublishError("Something went Wrong");
       console.log(error);
     }
   };
