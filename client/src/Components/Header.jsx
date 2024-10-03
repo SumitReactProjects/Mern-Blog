@@ -69,7 +69,7 @@ const Header = () => {
                 {currentUser.email}
               </span>
             </Dropdown.Header>
-            <Link to={"/dashboard?tab=Profile"} as={"div"}>
+            <Link to={"dashboard?tab=profile"} as={"div"}>
               <Dropdown.Item>Profile</Dropdown.Item>
             </Link>
             <Link to={"/signin"} as={"div"} onClick={handleSignout}>
