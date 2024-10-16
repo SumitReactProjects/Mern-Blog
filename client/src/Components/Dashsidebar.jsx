@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { signoutSuccess } from "../redux/user/userslice";
 import { useSelector } from "react-redux";
-
+import { LuUsers } from "react-icons/lu";
 const Dashsidebar = () => {
   const { currentUser } = useSelector((state) => state.user);
   const location = useLocation();
@@ -63,6 +63,19 @@ const Dashsidebar = () => {
                 as="div"
               >
                 Posts
+              </SidebarItem>
+            </Link>
+          )}
+          {currentUser.isAdmin && (
+            <Link to={"/dashboard?tab=users"}>
+              <SidebarItem
+                active={tab === "users"}
+                icon={LuUsers}
+                labelColor="dark"
+                className="cursor-pointer"
+                as="div"
+              >
+                Users
               </SidebarItem>
             </Link>
           )}
