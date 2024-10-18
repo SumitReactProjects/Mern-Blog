@@ -23,6 +23,11 @@ body {
 }
 .post-content p {
   padding-bottom: 0.5rem;
+  color: inherit;
+}
+.post-content p span {
+  padding-bottom: 0.5rem;
+  color: inherit !important;
 }
 .post-content a {
   color: #5794f4 !important;
