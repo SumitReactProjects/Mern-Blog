@@ -3,8 +3,11 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import CallToAction from "../Components/CallToAction";
 
+import CommentSection from "../Components/CommentSection";
+
 export default function PostPage() {
   const { postslug } = useParams();
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [post, setPost] = useState(null);
@@ -77,6 +80,7 @@ export default function PostPage() {
         dangerouslySetInnerHTML={{ __html: post && post.content }}
       ></div>
       <CallToAction />
+      <CommentSection postId={post._id} />
     </main>
   );
 }

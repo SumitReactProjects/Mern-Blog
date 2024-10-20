@@ -4,7 +4,7 @@ export default function CallToAction() {
   return (
     <div
       className="flex flex-col sm:flex-row border border-teal-500 justify-center rounded-tl-3xl
-    rounded-br-3xl text-center p-3"
+    rounded-br-3xl text-center max-w-4xl mx-auto w-full p-3"
     >
       <div className="flex-1 flex flex-col justify-center">
         <h2 className="text-2xl">Want to learn More About Javascript?</h2>
