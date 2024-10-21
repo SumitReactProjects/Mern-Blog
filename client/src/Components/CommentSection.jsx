@@ -2,6 +2,8 @@ import { Alert, Button, Textarea } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import Comment from "./Comment";
 
 const CommentSection = ({ postId }) => {
   const { currentUser } = useSelector((state) => state.user);
@@ -32,9 +34,12 @@ const CommentSection = ({ postId }) => {
 
       const data = await res.json();
 
+      console.log(data);
+
       if (res.ok) {
         setComment("");
         setCommentError(null);
+        setComments([data, ...comments]);
       }
     } catch (error) {
       setCommentError(error);
@@ -111,10 +116,17 @@ const CommentSection = ({ postId }) => {
               <p>{comments.length}</p>
             </div>
           </div>
+
+          {comments.map((comment) => (
+            <Comment key={comment._id} comment={comment} />
+          ))}
         </>
       )}
     </div>
   );
 };
 
+CommentSection.propTypes = {
+  postId: PropTypes.any, // name must be a string and is required
+};
 export default CommentSection;
