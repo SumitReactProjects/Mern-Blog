@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
+import { AiFillLike } from "react-icons/ai";
+import { useSelector } from "react-redux";
 
-const Comment = ({ comment }) => {
+const Comment = ({ comment, onLike }) => {
   const [user, setUser] = useState({});
+  const { currentUser } = useSelector((state) => state.user);
 
   useEffect(() => {
     const getUser = async () => {
@@ -15,7 +18,7 @@ const Comment = ({ comment }) => {
           setUser(data);
         }
       } catch (error) {
-        console.log(error);
+        console.log(error.message);
       }
     };
     getUser();
@@ -37,10 +40,29 @@ const Comment = ({ comment }) => {
             {user ? `@${user.username}` : "anonymous user"}
           </span>
           <span className="text-gray-500 text-xs">
-            {moment(comment.createAt).fromNow()}
+            {moment(comment.createdAt).fromNow()}
           </span>
         </div>
         <p className="text-gray-500 pb-2">{comment.content}</p>
+        <div className="flex items-center pt-2 text-xs border-t dark:border-gray-700 max-w-fit gap-2">
+          <button
+            type="button"
+            onClick={() => onLike(comment._id)}
+            className={`text-gray-400 hover:text-blue-500 ${
+              currentUser &&
+              comment.likes.includes(currentUser._id) &&
+              "!text-blue-500"
+            }`}
+          >
+            <AiFillLike className="text-lg" />
+          </button>
+          <p>
+            {comment.numberOfLikes > 0 &&
+              comment.numberOfLikes +
+                " " +
+                (comment.numberOfLikes === 1 ? "like" : "likes")}
+          </p>
+        </div>
       </div>
     </div>
   );
@@ -50,4 +72,5 @@ export default Comment;
 
 Comment.propTypes = {
   comment: PropTypes.any,
+  onLike: PropTypes.any,
 };
