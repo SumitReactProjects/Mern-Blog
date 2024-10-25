@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { signoutSuccess } from "../redux/user/userslice";
 import { useSelector } from "react-redux";
 import { LuUsers } from "react-icons/lu";
+import { FcAbout } from "react-icons/fc";
 const Dashsidebar = () => {
   const { currentUser } = useSelector((state) => state.user);
   const location = useLocation();
@@ -76,6 +77,18 @@ const Dashsidebar = () => {
                 as="div"
               >
                 Users
+              </SidebarItem>
+            </Link>
+          )}
+          {currentUser.isAdmin && (
+            <Link to={"/dashboard?tab=comments"}>
+              <SidebarItem
+                active={tab === "comments"}
+                icon={FcAbout}
+                className="cursor-pointer"
+                as="div"
+              >
+                Comments
               </SidebarItem>
             </Link>
           )}
