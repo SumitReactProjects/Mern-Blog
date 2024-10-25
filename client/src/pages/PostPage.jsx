@@ -38,8 +38,6 @@ export default function PostPage() {
     fetchPost();
   }, [postslug]);
 
-  console.log(post);
-
   if (error) {
     console.log(error);
   }

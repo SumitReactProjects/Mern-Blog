@@ -5,7 +5,7 @@ import { AiFillLike } from "react-icons/ai";
 import { useSelector } from "react-redux";
 import { Button, Textarea } from "flowbite-react";
 
-const Comment = ({ comment, onLike, onEdit }) => {
+const Comment = ({ comment, onLike, onEdit, onDelete }) => {
   const [user, setUser] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(comment.content);
@@ -26,7 +26,6 @@ const Comment = ({ comment, onLike, onEdit }) => {
     };
     getUser();
   }, [comment]);
-  console.log(user);
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -123,13 +122,22 @@ const Comment = ({ comment, onLike, onEdit }) => {
               </p>
               {currentUser &&
                 (currentUser._id === comment.userId || currentUser.isAdmin) && (
-                  <button
-                    type="button"
-                    className="text-gray-500 hover:text-blue-500"
-                    onClick={handleEdit}
-                  >
-                    Edit
-                  </button>
+                  <>
+                    <button
+                      type="button"
+                      className="text-gray-500 hover:text-blue-500"
+                      onClick={handleEdit}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      type="button"
+                      className="text-gray-500 hover:text-red-500"
+                      onClick={() => onDelete(comment._id)}
+                    >
+                      Delete
+                    </button>
+                  </>
                 )}
             </div>
           </>
@@ -144,4 +152,6 @@ export default Comment;
 Comment.propTypes = {
   comment: PropTypes.any,
   onLike: PropTypes.any,
+  onEdit: PropTypes.any,
+  onDelete: PropTypes.any,
 };
