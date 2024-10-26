@@ -6,7 +6,8 @@ import { useDispatch } from "react-redux";
 import { signoutSuccess } from "../redux/user/userslice";
 import { useSelector } from "react-redux";
 import { LuUsers } from "react-icons/lu";
-import { FcAbout } from "react-icons/fc";
+import { MdOutlineDashboard } from "react-icons/md";
+import { FaRegCommentAlt } from "react-icons/fa";
 const Dashsidebar = () => {
   const { currentUser } = useSelector((state) => state.user);
   const location = useLocation();
@@ -42,6 +43,17 @@ const Dashsidebar = () => {
     <Sidebar className="w-full">
       <Sidebar.Items>
         <Sidebar.ItemGroup className="flex flex-col gap-1">
+          <Link to={"/dashboard?tab=dash"}>
+            <SidebarItem
+              active={tab === "dash"}
+              icon={MdOutlineDashboard}
+              className="cursor-pointer"
+              labelColor="dark"
+              as="div"
+            >
+              Dashboard
+            </SidebarItem>
+          </Link>
           <Link to={"/dashboard?tab=profile"}>
             <SidebarItem
               active={tab === "profile"}
@@ -84,7 +96,7 @@ const Dashsidebar = () => {
             <Link to={"/dashboard?tab=comments"}>
               <SidebarItem
                 active={tab === "comments"}
-                icon={FcAbout}
+                icon={FaRegCommentAlt}
                 className="cursor-pointer"
                 as="div"
               >

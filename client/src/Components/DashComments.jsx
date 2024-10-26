@@ -2,7 +2,6 @@ import { Modal, Table, Button } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
-import { FaCheck, FaTimes } from "react-icons/fa";
 
 export default function DashComments() {
   const { currentUser } = useSelector((state) => state.user);
@@ -28,7 +27,7 @@ export default function DashComments() {
     if (currentUser.isAdmin) {
       fetchComments();
     }
-  }, [currentUser._id]);
+  }, [currentUser]);
 
   const handleShowMore = async () => {
     const startIndex = comments.length;
@@ -73,6 +72,9 @@ export default function DashComments() {
 
   return (
     <div className="table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500">
+      <h2 className="text-xl font-semibold mb-2">
+        Comments ({comments.length})
+      </h2>
       {currentUser.isAdmin && comments.length > 0 ? (
         <>
           <Table hoverable className="shadow-md">
@@ -136,7 +138,7 @@ export default function DashComments() {
             </h3>
             <div className="flex justify-center gap-4">
               <Button color="failure" onClick={handleDeleteComment}>
-                Yes, I'm sure
+                Yes, I m sure
               </Button>
               <Button color="gray" onClick={() => setShowModal(false)}>
                 No, cancel
