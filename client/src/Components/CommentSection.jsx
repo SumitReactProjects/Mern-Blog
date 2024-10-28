@@ -103,7 +103,7 @@ const CommentSection = ({ postId }) => {
     setShowModal(false);
     try {
       if (!currentUser) {
-        navigate("/sign-in");
+        navigate("/signin");
       }
       const res = await fetch(`/api/comment/deleteComment/${commentId}`, {
         method: "DELETE",
@@ -112,6 +112,7 @@ const CommentSection = ({ postId }) => {
       if (res.ok) {
         const data = await res.json();
         setComments(comments.filter((comment) => comment._id !== commentId));
+        console.log(data);
       }
     } catch (error) {
       console.log(error);
