@@ -48,7 +48,7 @@ const Header = () => {
 
     const searchQuary = urlParams.toString();
 
-    navigate(`/search/${searchQuary}`);
+    navigate(`/search?${searchQuary}`);
   };
 
   return (
