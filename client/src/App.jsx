@@ -8,7 +8,7 @@ import Dashboard from "./pages/Dashboard";
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
 import PrivateRoute from "./Components/PrivateRoute";
-import OnlyAdminPrivateRoute from "./Components/onlyAdminPrivateRoute";
+import OnlyAdminPrivateRoute from "./Components/OnlyAdminPrivateRoute";
 import CreatePost from "./pages/CreatePost";
 import UpdatePost from "./pages/UpdatePost";
 import PostPage from "./pages/PostPage";
