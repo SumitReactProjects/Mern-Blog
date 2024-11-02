@@ -8,7 +8,7 @@ function Home() {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const res = await fetch("/api/post/getposts");
+      const res = await fetch("/api/post/getposts?limit=3");
       const data = await res.json();
       setPosts(data.posts);
     };
@@ -39,10 +39,10 @@ function Home() {
       </div>
       {posts && posts.length > 0 && (
         <>
-          <h1 className="text-2xl text-center pt-3 font-semibold">
+          <h1 className="text-2xl text-center pt-3 font-semibold mb-3">
             Recent posts
           </h1>
-          <div className="max-w-6xl mx-auto p-3 flex flex-col md:flex-row flex-wrap gap-4 p-8 py-7">
+          <div className=" container mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-4 mb-5 ">
             {posts.map((post) => (
               <PostCard key={post._id} post={post} className="w-48" />
             ))}

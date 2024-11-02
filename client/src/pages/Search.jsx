@@ -143,7 +143,7 @@ export default function Search() {
           </Button>
         </form>
       </div>
-      <div className="p-4">
+      <div className="p-4 w-full">
         <h1 className="text-3xl font-semibold sm:border-b border-gray-300 pb-2 mb-2">
           Posts results:
         </h1>
@@ -151,7 +151,7 @@ export default function Search() {
           <p className="text-xl gray-500">No Post Found...</p>
         )}
         {loading && <p className="text-xl text-gray-500">Loading...</p>}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
           {!loading &&
             posts &&
             posts.map((post) => (
