@@ -73,10 +73,7 @@ export default function PostPage() {
       <h1 className="text-3xl mt-10 p-3 text-center font-serif max-w-2xl mx-auto lg:text-4xl">
         {post && post.title}
       </h1>
-      <Link
-        to={`search?category=${post && post.category}`}
-        className="self-center mt-5"
-      >
+      <Link className="self-center mt-5">
         <Button color={"gray"} pill size={"xs"}>
           {post && post.category}
         </Button>
@@ -99,8 +96,8 @@ export default function PostPage() {
       <CallToAction />
       <CommentSection postId={post._id} />
       <div className="flex flex-col justify-center items-center mb-5">
-        <h1 className="text-xl mt-5">Recent articles</h1>
-        <div className="flex gap-5 sm:flex-row flex-col mt-5 flex-wrap justify-center">
+        <h1 className="text-xl font-semibold mt-5 mb-5">Recent articles</h1>
+        <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-5">
           {recentPosts &&
             recentPosts.map((post) => <PostCard key={post._id} post={post} />)}
         </div>

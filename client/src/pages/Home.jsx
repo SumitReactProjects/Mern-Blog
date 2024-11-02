@@ -42,7 +42,7 @@ function Home() {
           <h1 className="text-2xl text-center pt-3 font-semibold mb-3">
             Recent posts
           </h1>
-          <div className=" container mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-4 mb-5 ">
+          <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-5">
             {posts.map((post) => (
               <PostCard key={post._id} post={post} className="w-48" />
             ))}
